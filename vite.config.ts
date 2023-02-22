@@ -19,8 +19,10 @@ export default defineConfig({
   //配置@符
   resolve: {
     alias: {
-      "@": path.resolve('./src'), // @代替src
-      "#": path.resolve('./types')
-    }
+      '@': path.resolve(__dirname, 'src'),
+      '#': path.resolve(__dirname, 'types')
+    },
+    extensions: ['.mjs', '.js', '.ts', '.jsx', '.tsx', '.json']
+
   }
 })

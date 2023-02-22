@@ -1,11 +1,14 @@
 <script setup lang="ts">
-import { reactive } from "vue";
+import { loginApi } from "@/api/login";
+import { reactive, ref } from "vue";
+// import { particles } from "@/views/login/comm/particles";
 const state = reactive({
   loginForm: {
     username: "",
     password: "",
   },
 });
+let loginRef = ref();
 const { loginForm } = state;
 const loginRules = reactive({
   // 登录表单的验证规则对象
@@ -26,55 +29,81 @@ const loginRules = reactive({
     },
   ],
 });
+const doLogin = (e: { preventDefault: () => void }) => {
+  e.preventDefault();
+  loginRef.value.validate(async (valid: boolean) => {
+    if (valid) {
+      // 登录成功
+      console.log("登录成功");
+      const res = await loginApi(loginForm);
+      if (res.code == 200) {
+      }
+      console.log(res);
+    } else {
+      // 登录失败
+      console.log("登录失败");
+      return false;
+    }
+  });
+};
 </script>
 
 <template>
-  <!-- 登录页面的整体盒子 -->
-  <div class="login-container">
-    <!-- 登录的盒子 -->
-    <div class="login-box">
-      <!-- 标题的盒子 -->
-      <div class="title-box">SanTianDaYu—LiangTianShaiWang</div>
+  <div id="particle-container">
+    <!-- <div class="login">
+      <Particles
+        id="tsparticles"
+        class="login__particles"
+        :options="particles"
+      />
+    </div> -->
+    <!-- 登录页面的整体盒子 -->
+    <div class="login-container">
+      <!-- 登录的盒子 -->
+      <div class="login-box">
+        <!-- 标题的盒子 -->
+        <div class="title-box">SanTianDaYu—LiangTianShaiWang</div>
 
-      <!-- 登录的表单区域 -->
-      <el-form
-        class="title-form"
-        :model="loginForm"
-        :rules="loginRules"
-        ref="loginRef"
-      >
-        <!-- 用户名 -->
-        <el-form-item prop="username">
-          <el-input
-            style="height: 80px"
-            v-model="loginForm.username"
-            placeholder="请输入用户名"
-            maxlength="10"
-            minlength="1"
-          ></el-input>
-        </el-form-item>
-        <!-- 密码 -->
-        <el-form-item prop="password">
-          <el-input
-            v-model="loginForm.password"
-            type="password"
-            placeholder="请输入密码"
-            maxlength="15"
-            minlength="6"
-          ></el-input>
-        </el-form-item>
-        <el-form-item>
-          <button class="btn-login" @click="login">登录</button>
-          <!-- <div class="loginBtn"   @click="login">
-  <input type="text" placeholder="登录">
-  <span class="bottom"></span>
-  <span class="right"></span>
-  <span class="top"></span>
-  <span class="left"></span>
-</div> -->
-          <el-link type="info" @click="$router.push('/reg')">去注册</el-link>
-        </el-form-item>
-      </el-form>
+        <!-- 登录的表单区域 -->
+        <el-form
+          class="title-form"
+          :model="loginForm"
+          :rules="loginRules"
+          ref="loginRef"
+        >
+          <!-- 用户名 -->
+          <el-form-item prop="username">
+            <el-input
+              style="margin-bottom: 16px"
+              v-model="loginForm.username"
+              placeholder="请输入用户名"
+              maxlength="10"
+              minlength="1"
+            ></el-input>
+          </el-form-item>
+          <!-- 密码 -->
+          <el-form-item prop="password">
+            <el-input
+              v-model="loginForm.password"
+              type="password"
+              placeholder="请输入密码"
+              maxlength="15"
+              minlength="6"
+            ></el-input>
+          </el-form-item>
+          <el-form-item>
+            <button class="btn-login" @click="doLogin">登录</button>
+            <!-- <div class="loginBtn"   @click="login">
+    <input type="text" placeholder="登录">
+    <span class="bottom"></span>
+    <span class="right"></span>
+    <span class="top"></span>
+    <span class="left"></span>
+  </div> -->
+            <el-link type="info">去注册</el-link>
+          </el-form-item>
+        </el-form>
+      </div>
     </div>
   </div>
 </template>
@@ -83,6 +112,7 @@ const loginRules = reactive({
 button:hover {
   background: purple;
 }
+
 button {
   min-height: 53px;
   margin: 0;
@@ -164,24 +194,28 @@ button:after {
 
   left: 0;
 }
+
 #particle-container {
   width: 100vw !important;
 
   height: 100%;
 }
+
 #particle-container ::-webkit-scrollbar {
   width: 0px !important;
 }
 
-::v-deep .el-input__inner {
+:deep(.el-input__inner) {
   height: 60px;
   line-height: 60px;
 }
+
 .loginBtn {
   margin-top: 10px;
   position: relative;
   width: 100%;
   font-size: 24px;
+
   input {
     cursor: pointer;
     text-align: center;
@@ -275,7 +309,7 @@ button:after {
 
 .login-container {
   width: 100%;
-  background: url("../assets/images/login_bg.jpg") center;
+  background: url("@/assets/images/login_bg.jpg") center;
   background-size: cover;
   height: 100%;
 
@@ -299,9 +333,7 @@ button:after {
       color: #fff;
       text-align: center;
     }
-    .title-form {
-      // margin-top: 10px;
-    }
+
     .btn-login {
       width: 100%;
     }

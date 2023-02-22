@@ -7,14 +7,14 @@
 // 》》》》》在app文件处设置路由入口占位符/router-view
 
 
-import { App } from 'vue'
+// import { App } from 'vue'
 import { createRouter, createWebHashHistory } from 'vue-router'
 
 const routes = [
     {
         name: 'login',
         path: '/login',
-        component: () => import('../views/login/login.vue')
+        component: () => import('@/views/login/login.vue')
     }
 ]
 const router = createRouter({
@@ -25,6 +25,6 @@ export default router
 
 
 // 也可以创建一个函数，在main.ts文件处调用进行全局注册
-export const initRouter = (app: App<Element>) => {
-    app.use(router)
-}
+// export const initRouter = (app: App<Element>) => {
+//     app.use(router)
+// }

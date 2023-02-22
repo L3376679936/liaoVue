@@ -1,12 +1,19 @@
-import { createApp } from 'vue'
+import { App, createApp } from 'vue'
 import './style.css'
-import App from './App.vue'
+import App1 from './App.vue'
 import router from './router'
-import { initRouter } from './router'
 
-const app = createApp(App)
+// import Particles from 'particles.vue3'
+
+
+
+// import { initRouter } from './router'
+
+const app = createApp(App1)
+app.use(router)
 app.mount('#app')
-initRouter(app)
+// app.use(Particles)
+// initRouter(app)
 
 
 // createApp(App).use(router).mount('#app')
